@@ -1,7 +1,17 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using RazorTutorial;
+using RazorTutorial.Services;
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton<IEmployeeRepository, MockEmployeeRepository >();
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+    options.AppendTrailingSlash = true;
+    options.ConstraintMap.Add("even",typeof(EvenConstraint));
+});
 
 var app = builder.Build();
 

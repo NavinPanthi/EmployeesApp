@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\Employees\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RazorTutorial.Models\RazorTutorial.Models.csproj">
@@ -24,5 +25,8 @@
     <ProjectReference Include="..\RazorTutorial.Services\RazorTutorial.Services.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\" />
   </ItemGroup>
 </Project>
