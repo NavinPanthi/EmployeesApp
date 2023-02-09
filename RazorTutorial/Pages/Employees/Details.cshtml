@@ -1,7 +1,8 @@
-﻿@*@page "/employees/view/{id:int}"*@ @*id must be int*@
-@*@page "/employees/view/{id:min(1):max(100)}"*@ @*id must be minimum 1 and maximum of 100.*@
+﻿@*@page "/employees/view/{id:int}"*@              @*id must be int*@
+@*@page "/employees/view/{id:min(1):max(100)}"*@  @*id must be minimum 1 and maximum of 100.*@
+@*@page "/employees/view/{id:even:min(2)}"*@      @*id must be even and minimum 2*@
 
-@page "/employees/view/{id:even:min(2)}"
+@page "/employees/view/{id:min(1)}"
 @model RazorTutorial.Pages.Employees.DetailsModel
 @{
     ViewData["Title"] = "Details";
@@ -28,7 +29,7 @@
             <div class="card-footer text-center">
                 <a asp-page="index"
                    class="btn btn-primary">Back</a>
-                <a href="#" class="btn btn-primary">Edit</a>
+                <a href="edit" class="btn btn-primary">Edit</a>
                 <a href="#" class="btn btn-danger">Delete</a>
             </div>
         </div>

@@ -15,7 +15,7 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-        Message = "Hello World. \n The time on the server is" + DateTime.Now.ToLongTimeString();
+        Message = "Hello World. The time on the server is" + DateTime.Now.ToLongTimeString();
     }
 }
 

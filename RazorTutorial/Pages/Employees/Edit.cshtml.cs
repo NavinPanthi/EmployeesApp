@@ -7,30 +7,40 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using RazorTutorial.Services;
 using RazorTutorial.Models;
 
+
 namespace RazorTutorial.Pages.Employees
 {
-    public class DetailsModel : PageModel
+
+    public class EditModel : PageModel
     {
         private readonly IEmployeeRepository employeeRepository;
-        public DetailsModel(IEmployeeRepository employeeRepository)
+
+        public EditModel(IEmployeeRepository employeeRepository)
         {
             this.employeeRepository = employeeRepository;
         }
 
-        public Employee Employee {get; private set;}
+        // This is the property the display template will use to
+        // display existing Employee data
+        public Employee Employee { get; private set; }
 
-        //[BindProperty(SupportsGet= true)]
-        //public int Id { get; set; }
-
+        // Populate Employee property
         public IActionResult OnGet(int id)
         {
-            //Id = id;
             Employee = employeeRepository.GetEmployee(id);
-            if(Employee==null)
+
+            if (Employee == null)
             {
                 return RedirectToPage("/NotFound");
             }
+
             return Page();
+        }
+        public IActionResult OnPost(Employee employee)
+        {
+            Employee = employeeRepository.Update(employee);
+            return RedirectToPage("Index");
+
         }
     }
 }
