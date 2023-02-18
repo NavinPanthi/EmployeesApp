@@ -17,7 +17,15 @@ namespace RazorTutorial.Services
                 new Employee{Id=4, Name="Sanjok Sunam", Department=Dept.HR, Email="sunam567@gmail.com" },
             };
 		}
-		public IEnumerable<Employee> GetAllEmployees()
+
+        public Employee Add(Employee newEmployee)
+        {
+			newEmployee.Id = _employeeList.Max(e => e.Id) + 1;
+			_employeeList.Add(newEmployee);
+			return newEmployee;
+        }
+
+        public IEnumerable<Employee> GetAllEmployees()
 		{
 			return _employeeList;
 		}

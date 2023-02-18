@@ -25,6 +25,7 @@ namespace RazorTutorial.Pages.Employees
             this.webHostEnvironment = webHostEnvironment;
         }
 
+        [BindProperty]
         public Employee Employee { get; set; }
 
         // We use this property to store and process
@@ -36,9 +37,16 @@ namespace RazorTutorial.Pages.Employees
         public bool Notify  { get; set; }
         public string Message { get; set; }
 
-        public IActionResult OnGet(int id)
+        public IActionResult OnGet(int? id)
         {
-            Employee = employeeRepository.GetEmployee(id);
+            if (id.HasValue)
+            {
+                Employee = employeeRepository.GetEmployee(id.Value);
+            }
+            else
+            {
+                Employee = new Employee();
+            }
 
             if (Employee == null)
             {
@@ -48,25 +56,39 @@ namespace RazorTutorial.Pages.Employees
             return Page();
         }
 
-        public IActionResult OnPost(Employee employee)
+        public IActionResult OnPost()
         {
-            if (Photo != null)
+            if (ModelState.IsValid)
             {
-                // If a new photo is uploaded, the existing photo must be
-                // deleted. So check if there is an existing photo and delete
-                if (employee.PhotoPath != null)
+                if (Photo != null)
                 {
-                    string filePath = Path.Combine(webHostEnvironment.WebRootPath,
-                        "images", employee.PhotoPath);
-                    System.IO.File.Delete(filePath);
+                    // If a new photo is uploaded, the existing photo must be
+                    // deleted. So check if there is an existing photo and delete
+                    if (Employee.PhotoPath != null)
+                    {
+                        string filePath = Path.Combine(webHostEnvironment.WebRootPath,
+                            "images", Employee.PhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+                    // Save the new photo in wwwroot/images folder and update
+                    // PhotoPath property of the employee object
+                    Employee.PhotoPath = ProcessUploadedFile();
                 }
-                // Save the new photo in wwwroot/images folder and update
-                // PhotoPath property of the employee object
-                employee.PhotoPath = ProcessUploadedFile();
-            }
 
-            Employee = employeeRepository.Update(employee);
-            return RedirectToPage("Index");
+                if (Employee.Id > 0)
+                {
+                    Employee = employeeRepository.Update(Employee);
+                }
+                else
+                {
+                    Employee = employeeRepository.Add(Employee);
+                }
+
+                
+                return RedirectToPage("Index");
+            }
+            return Page();
+         
         }
 
         public IActionResult OnPostUpdateNotificationPreferences(int id)
